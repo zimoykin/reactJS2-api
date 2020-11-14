@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin: 5rem;
 }
 
 .App-logo {
@@ -35,4 +36,24 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+/* Dz */
+.container {
+  display: flex;
+  justify-content: center;
+  margin: 1.rem;
+  padding-top: 0.5rem;
+}
+.postDescription {
+  width: 850px;
+  word-wrap: break-word;
+  text-align: justify;
+}
+.postHeader {
+  background-color: lemonchiffon;
+  color:darkslategrey;
+  text-transform: uppercase;
+  font-family: Helvetica, Arial, sans-serif;
 }
