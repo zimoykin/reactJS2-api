@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import * as K from '../Models/Constants'
+import * as K from '../Pages/Models/Constants'
 import PostsList from '../Pages/Posts'
-import Loader from './Loader'
+import Loader from './Elements/Loader'
 
 
 function HomePage ( ) {

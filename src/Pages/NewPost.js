@@ -1,9 +1,10 @@
 import React from 'react'
-import * as K from '../Models/Constants'
-import Loader from './Loader'
+import * as K from './Models/Constants'
+import Loader from './Elements/Loader'
+import PlaceSelect from './Elements/PlaceSelect'
 
 
-function SendPost(title, description) {
+function SendPost(title, description, placeId, tags) {
 
     console.log('start')
     //npm install base-64
@@ -16,7 +17,7 @@ function SendPost(title, description) {
     const requestOptions = {
         method: 'POST',
         headers: headers,
-        body: JSON.stringify({ title: title, description: description })
+        body: JSON.stringify({ title: title, description: description, placeId: placeId, tags: tags})
     };
 
     fetch(K.ADDRESS + '/api/posts', requestOptions)
@@ -45,12 +46,15 @@ class NewPost extends React.Component {
 
         this.handleChangeTitle = this.handleChangeTitle.bind(this);
         this.handleChangeDescription = this.handleChangeDescription.bind(this);
+        this.handleChangePlaceID = this.handleChangePlaceID.bind(this);
+        this.handleChangeTags = this.handleChangeTags.bind(this);
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit(event) {
 
-        SendPost(this.state.title, this.state.description)
+        SendPost(this.state.title, this.state.description, this.state.placeid, this.state.tags)
 
         this.setState({ title: '' });
         this.setState({ description: '' });
@@ -62,6 +66,13 @@ class NewPost extends React.Component {
     }
     handleChangeDescription(event) {
         this.setState({ description: event.target.value });
+    }
+    handleChangePlaceID (event) {
+        this.setState({ placeid: event.target.value });
+        console.log(this.state.placeid)
+    }
+    handleChangeTags (event) {
+        this.setState({ tags: event.target.value });
     }
 
     render() {
@@ -99,20 +110,15 @@ class NewPost extends React.Component {
                             <div className="input-group-prepend">
                                 <span className="input-group-text">TAGS </span>
                             </div>
-                            <textarea className="form-control" type="text" value={this.state.description} onChange={this.handleChangeDescription} ></textarea>
+                            <textarea className="form-control" type="text" value={this.state.tags} onChange={this.handleChangeTags} ></textarea>
                         </div>
 
                         <div className="input-group">
                             <div className="input-group-prepend">
                                 <span className="input-group-text"> Place </span>
                             </div>
-                            <select>
-                                <option value="grapefruit">Грейпфрут</option>
-                                <option value="lime">Лайм</option>
-                                <option selected value="coconut">Кокос</option>
-                                <option value="mango">Манго</option>
-                            </select>
-                        </div>
+                               <PlaceSelect onChange={this.handleChangePlaceID}/>
+                            </div>
 
                     </div>
 
