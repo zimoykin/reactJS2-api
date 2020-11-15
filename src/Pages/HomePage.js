@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
-import Context from '../Context'
+import React, { useEffect, useState } from 'react'
 import * as K from '../Models/Constants'
 import PostsList from '../Pages/Posts'
-import Error from '../Pages/Error'
+import Loader from './Loader'
 
 
-function StartPage ( ) {
+function HomePage ( ) {
 
-    const { setSearch } = useContext(Context)
-    const [posts, setPosts] = React.useState( [] )
-    const [error, setTextError] = React.useState ("")
+    const [posts, setPosts] = React.useState( [] );
+
 
     //npm install base-64
     const base64 = require('base-64');
@@ -26,8 +24,8 @@ function StartPage ( ) {
             setPosts(posts)
           }, K.TIMEOUT)
         })
-        .catch(e => { 
-            //setTextError(e)
+        .catch( e => { 
+          console.log(e)
         } )
       }, [])
 
@@ -35,12 +33,11 @@ function StartPage ( ) {
     return  (
 
         <div>
-            { posts.length ? <PostsList posts={posts}/> : <p>loading...</p> }
-            { error !== "" ? <Error text={error}/> : null }
+            { posts.length ? <PostsList posts={posts}/> : <Loader /> }
         </div>
 
     )
 }
 
-export default StartPage
+export default HomePage
 
