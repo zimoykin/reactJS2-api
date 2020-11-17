@@ -2,6 +2,7 @@ import React from 'react'
 import * as K from './Models/Constants'
 import Loader from './Elements/Loader'
 import PlaceSelect from './Elements/PlaceSelect'
+import { Redirect } from 'react-router-dom'
 
 
 function SendPost(title, description, placeId, tags) {
@@ -78,6 +79,10 @@ class NewPost extends React.Component {
 
     render() {
         return (
+            
+            !localStorage.getItem('auth') 
+            ? <Redirect to="/login"/>
+            :
             <form onSubmit={this.handleSubmit}>
                 <div className="d-block p-2 bg-light text-white">
 

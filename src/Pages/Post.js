@@ -3,40 +3,47 @@ import { useParams } from 'react-router-dom'
 import * as K from './Models/Constants'
 import Loader from './Elements/Loader'
 import Posts from '../Pages/Posts'
+import AlertError from './Elements/ErrorAlert'
 
-function Post ( ) {
+function Post() {
 
     let { id } = useParams()
 
+    const [textError, setTextError] = React.useState( '' )
+
     const base64 = require('base-64');
-    const [post, setPost] = useState( [] );
-    const user = JSON.parse ( localStorage.getItem('auth') )
-    const [firstrReq, setFirstRequest] = useState(false)
+    const user = JSON.parse(localStorage.getItem('auth'))
 
-     var headers = new Headers();
-     headers.append("Authorization", "Basic " + base64.encode(user.login + ":" + user.password));
+    var headers = new Headers();
+    headers.append("Authorization", "Basic " + base64.encode(user.login + ":" + user.password));
+    headers.append('Content-Type', 'application/json')
 
-    useEffect( () => {
-        
-        setFirstRequest(true)
-        console.log(`setrequest:${firstrReq}`)
+    const [posts, setPosts] = useState([]);
 
-        fetch(K.ADDRESS + `/api/posts/${id}`, {headers: headers} )
-            .then(response => response.json())
+    useEffect(() => {
+
+        fetch(K.ADDRESS + `/api/posts/${id}/`, { headers: headers })
+            .then(response => {
+                if (!response.ok) {
+                    throw Error("Network Request Failed");
+                }
+                return response
+            })
+            .then(post => post.json())
             .then(post => {
-                setPost([post])
-                console.log ( post )
-                })
+                setTimeout(() => {
+                    setPosts([post])
+                }, K.TIMEOUT)
+            })
             .catch(e => {
                 console.log(e)
             })
-    }, [firstrReq])
+    }, [])
 
     return (
         <div>
-            if(firstrReq) {
-             post.length ? <Posts posts={post}/> : <Loader />
-            }
+             <AlertError textError={textError}/>
+            { posts.length ? <Posts posts={posts} /> : <Loader />}
         </div>
     )
 

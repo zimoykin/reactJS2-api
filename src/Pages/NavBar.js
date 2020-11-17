@@ -27,7 +27,7 @@ function NavBar() {
             <form className="form-inline my-2 my-lg-0">
                 <a href="/login" className="btn btn-outline-info my-2 my-sm-0">
                     { !localStorage.getItem('auth') 
-                    ? <p> LOGIN </p> 
+                    ? <span>LOGIN</span> 
                     : JSON.parse(localStorage.getItem('auth')).login }
                 </a>
             </form>
