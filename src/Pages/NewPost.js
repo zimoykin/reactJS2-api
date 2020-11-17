@@ -9,9 +9,10 @@ function SendPost(title, description, placeId, tags) {
     console.log('start')
     //npm install base-64
     const base64 = require('base-64');
+    const user = JSON.parse(localStorage.getItem('auth'))
 
     var headers = new Headers();
-    headers.append("Authorization", "Basic " + base64.encode(K.USER + ":" + K.PASSWORD));
+    headers.append("Authorization", "Basic " + base64.encode(user.login + ":" + user.password));
     headers.append('Content-Type', 'application/json')
 
     const requestOptions = {

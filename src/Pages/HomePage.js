@@ -15,7 +15,8 @@ function HomePage ( ) {
     useEffect (() => {
 
         var headers = new Headers();
-        headers.append("Authorization", "Basic " + base64.encode(K.USER + ":" + K.PASSWORD));
+        const user = JSON.parse(localStorage.getItem('auth'))
+        headers.append("Authorization", "Basic " + base64.encode(user.login + ":" + user.password));
 
         fetch( K.ADDRESS + '/api/posts', {headers: headers})
         .then(response => response.json())

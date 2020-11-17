@@ -12,8 +12,10 @@ function SelectPlace ( props ) {
 
     useEffect (() => {
 
+        const user = JSON.parse(localStorage.getItem('auth'))
+
         var headers = new Headers();
-        headers.append("Authorization", "Basic " + base64.encode(K.USER + ":" + K.PASSWORD));
+        headers.append("Authorization", "Basic " + base64.encode(user.login + ":" + user.password));
 
         fetch( K.ADDRESS + '/api/places', {headers: headers})
         .then(response => response.json())
