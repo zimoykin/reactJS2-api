@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import Loader from './Loader'
 import * as K from '../Models/Constants'
+import Cookies from 'universal-cookie';
 
 
 function SelectPlace ( props ) {
 
     const [places, setPlaces] = React.useState ( [] ) 
-
-    //npm install base-64
-    const base64 = require('base-64');
+    const cookies = new Cookies();
 
     useEffect (() => {
 
-        const user = JSON.parse(localStorage.getItem('auth'))
+      const token = cookies.get('accessToken')
 
         var headers = new Headers();
-        headers.append("Authorization", "Basic " + base64.encode(user.login + ":" + user.password));
+        headers.append("Authorization", `Bearer ${token}`);
 
         fetch( K.ADDRESS + '/api/places', {headers: headers})
         .then(response => response.json())

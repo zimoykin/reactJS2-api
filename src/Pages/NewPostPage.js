@@ -3,17 +3,18 @@ import * as K from './Models/Constants'
 import Loader from './Elements/Loader'
 import PlaceSelect from './Elements/PlaceSelect'
 import { Redirect } from 'react-router-dom'
+import Cookies from 'universal-cookie';
 
 
 function SendPost(title, description, placeId, tags) {
 
+    const cookies = new Cookies();
+
     console.log('start')
-    //npm install base-64
-    const base64 = require('base-64');
-    const user = JSON.parse(localStorage.getItem('auth'))
+    const token = cookies.get ('accessToken')
 
     var headers = new Headers();
-    headers.append("Authorization", "Basic " + base64.encode(user.login + ":" + user.password));
+    headers.append("Authorization", `Bearer ${token}` );
     headers.append('Content-Type', 'application/json')
 
     const requestOptions = {
@@ -52,6 +53,7 @@ class NewPost extends React.Component {
         this.handleChangeTags = this.handleChangeTags.bind(this);
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.cookies = new Cookies();
     }
 
     handleSubmit(event) {
@@ -78,9 +80,10 @@ class NewPost extends React.Component {
     }
 
     render() {
+
         return (
             
-            !localStorage.getItem('auth') 
+            !this.cookies.get('accessToken')
             ? <Redirect to="/login"/>
             :
             <form onSubmit={this.handleSubmit}>

@@ -4,18 +4,20 @@ import PostsList from '../Pages/Lists/PostsList'
 import Loader from './Elements/Loader'
 import AlertError from './Elements/ErrorAlert'
 import { Redirect } from "react-router-dom";
-import App from '../App'
+import { useParams } from 'react-router-dom'
 import { Prev } from 'react-bootstrap/esm/PageItem'
 import Cookies from 'universal-cookie';
 
 
-function HomePage() {
+function SearchPage() {
 
   const [posts, setPosts] = React.useState([]);
   const [errorText, setErrorText] = React.useState('');
   const [callEffect, setCallEffect] = React.useState (0)
 
   const cookies = new Cookies();
+
+  let { tag } = useParams()
 
   useEffect( () => {
 
@@ -26,7 +28,7 @@ function HomePage() {
     }
     headers.append("Authorization", "Bearer " + token);
 
-    fetch(K.ADDRESS + '/api/posts', { headers: headers })
+    fetch(`${K.ADDRESS}/api/search/tag/${tag}`, { headers: headers })
       .then(response => response.json())
       .then(posts => {
         setTimeout(() => {
@@ -59,5 +61,5 @@ function HomePage() {
   )
 }
 
-export default HomePage
+export default SearchPage
 

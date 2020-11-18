@@ -1,9 +1,12 @@
-import React, { Component } from 'react'
-import { map } from 'underscore'
+import React, { Component, useContext, useState } from 'react'
 import { Link } from "react-router-dom"
-import * as K from '../Pages/Models/Constants'
+import * as K from '../Models/Constants'
+import Cookies from 'universal-cookie';
 
-function NavBar() {
+function NavBar( props ) {
+
+    const cookies = new Cookies();
+
     return (
         <nav className="navibar navbar navbar-expand-lg navbar-light bg-light text-uppercase">
             <div className='collapse navbar-collapse'>
@@ -26,9 +29,9 @@ function NavBar() {
             </div>
             <form className="form-inline my-2 my-lg-0">
                 <a href="/login" className="btn btn-outline-info my-2 my-sm-0">
-                    { !localStorage.getItem('auth') 
+                    { cookies.get('username') === null
                     ? <span>LOGIN</span> 
-                    : JSON.parse(localStorage.getItem('auth')).login }
+                    : cookies.get('username') }
                 </a>
             </form>
         </nav>

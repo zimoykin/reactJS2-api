@@ -7,6 +7,7 @@ export const TIMEOUT = 1000
 export const MENUS = [
     { title: 'Home', href: '/home' },
     { title: 'New post', href: '/newpost' },
-    { title: 'something else', href: '/smthelse' },
+    { title: 'Country', href: '/country' },
+    { title: 'Place', href: '/place' },
     { title: 'Contacts', href: '/contacts' }
   ]

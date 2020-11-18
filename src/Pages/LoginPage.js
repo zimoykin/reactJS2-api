@@ -2,9 +2,12 @@ import React, { useState, useContext } from 'react'
 import * as K from './Models/Constants'
 import AuthContext from './Models/AuthContext'
 import { Redirect } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 
 function Login() {
+
+  const cookie = new Cookies();
 
   const { saveUser } = useContext(AuthContext)
 
@@ -45,20 +48,24 @@ function Login() {
       .then(response => response.json())
       .then(user => {
         console.log(user)
-
-        saveUser(login, password)
-
+        saveUser(user.accessToken, user.refreshToken, user.username)
         setRedirect(true)
 
       })
       .catch(e => {
         console.log(e.message)
+        
       })
 
   }
 
   function Logoff() {
-    localStorage.removeItem('auth')
+    
+    cookie.remove('accessToken')
+    cookie.remove('refreshToken')
+    cookie.remove('username')
+
+    saveUser('','', '')
     setRedirect(true)
   }
 
@@ -69,11 +76,11 @@ function Login() {
         ?
         <Redirect to="/home" />
         :
-        !localStorage.getItem('auth')
+        !cookie.get('accessToken')
           ?
           <UnauthorizedUser onChangeLogin={onChangeLogin} onChangePassword={onChangePassword} SendLogin={SendLogin} />
           :
-          <AuthorizedUser Logoff={Logoff} />
+          <AuthorizedUser Logoff={Logoff} cookie={cookie}/>
       }
     </div>
   )
@@ -106,7 +113,13 @@ function UnauthorizedUser(props) {
             </div>
 
             <div className="form-group">
-              <input className="btn btn-block btn-success" value="login" onClick={props.SendLogin} />
+              <button 
+                className="btn btn-block btn-success pointer" 
+                value="login" 
+                onClick={props.SendLogin} 
+                onPointerUp={props.SendLogin}
+                onpointerdown={props.SendLogin}
+                >LOGIN</button>
             </div>
 
           </div>
@@ -116,18 +129,18 @@ function UnauthorizedUser(props) {
   )
 }
 
-function AuthorizedUser(props) {
+function AuthorizedUser( props ) {
 
-  const user = JSON.parse(localStorage.getItem('auth'))
+  const username = props.cookie.get('username')
 
-  if (user === null) {
+  if (username === null) {
     return (null)
   }
 
   return (
     <div>
       <div className='container'>
-        <span>  {`HI ${user.login}`} </span>
+        <span>  {`HI ${username}`} </span>
       </div>
       <div className='container'>
         <div className="form-group">

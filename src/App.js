@@ -3,16 +3,16 @@ import './index.scss';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-//PAGES
-import MainLogo from './Logos/Logo'
-import SecondLogo from './Logos/SecondLogo'
-import HomePage from './Pages/HomePage'
-import NavBar from './Pages/NavBar'
-import NewPost from './Pages/NewPost'
-import Post from './Pages/Post'
-import Login from './Pages/Login'
+import Cookies from 'universal-cookie';
 
-import ReactDOM from 'react-dom'
+//PAGES
+import HomePage from './Pages/HomePage'
+import NavBar from './Pages/Elements/NavBar'
+import NewPost from './Pages/NewPostPage'
+import Login from './Pages/LoginPage'
+import Post from './Pages/PostPage'
+import Country from './Pages/CountryPage'
+import Search from './Pages/SearchPage'
 
 import AuthContext from './Pages/Models/AuthContext'
 
@@ -20,27 +20,39 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useRouteMatch,
-  useParams,
   Redirect
 } from "react-router-dom";
-import PostsList from './Pages/Posts';
 
 
 
 function App() {
 
-const saveUser = (login, password) => {
-  localStorage.setItem("auth", JSON.stringify({ login: login, password: password }))
+const cookies = new Cookies();
+
+ const saveUser = (acceessToken, refreshToken, username) => {
+
+  setIsLogged(cookies.get('accessToken') !== null)
+
+   if (acceessToken !== '' ) {
+
+      cookies.set('accessToken', acceessToken, { path: '/' });
+      cookies.set('refreshToken', refreshToken, { path: '/' });
+      cookies.set('username', username, { path: '/' });
+
+      setIsLogged(cookies.get('accessToken') !== null)
+   } 
+
 }
+ const [isLogged, setIsLogged] = React.useState ( 
+   cookies.get('accessToken') !== null
+  )
 
   return (
     <AuthContext.Provider value={{saveUser}}> 
     <Router>
       <div>
-        <NavBar />
-        { !localStorage.getItem('auth') ? <Redirect from='/' to='/login' /> : '' }
+        <NavBar isLogged={isLogged}/>
+        { !cookies.get('accessToken') ? <Redirect from='/' to='/login' /> : '' }
         <Switch>
           <Route path="/newpost">
             <NewPost />
@@ -48,8 +60,11 @@ const saveUser = (login, password) => {
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/smthelse">
-            <Smthelse />
+          <Route path="/country">
+            <Country />
+          </Route>
+          <Route path="/search/tag/:tag">
+            <Search />
           </Route>
           <Route path="/contacts">
             <Contacts />

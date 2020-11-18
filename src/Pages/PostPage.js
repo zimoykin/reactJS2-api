@@ -2,20 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import * as K from './Models/Constants'
 import Loader from './Elements/Loader'
-import Posts from '../Pages/Posts'
+import Posts from '../Pages/Lists/PostsList'
 import AlertError from './Elements/ErrorAlert'
+import Cookies from 'universal-cookie';
 
 function Post() {
 
     let { id } = useParams()
+    const cookies = new Cookies();
+    const token = cookies.get ('accessToken')
 
     const [textError, setTextError] = React.useState( '' )
 
-    const base64 = require('base-64');
-    const user = JSON.parse(localStorage.getItem('auth'))
-
     var headers = new Headers();
-    headers.append("Authorization", "Basic " + base64.encode(user.login + ":" + user.password));
+    headers.append("Authorization", `Bearer ${token}`);
     headers.append('Content-Type', 'application/json')
 
     const [posts, setPosts] = useState([]);
