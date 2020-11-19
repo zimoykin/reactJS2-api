@@ -4,6 +4,7 @@ import Loader from './Elements/Loader'
 import PlaceSelect from './Elements/PlaceSelect'
 import { Redirect } from 'react-router-dom'
 import Cookies from 'universal-cookie';
+import { useDrag } from 'react-dnd'
 
 
 function SendPost(title, description, placeId, tags) {
@@ -54,6 +55,7 @@ class NewPost extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.cookies = new Cookies();
+
     }
 
     handleSubmit(event) {
@@ -130,7 +132,6 @@ class NewPost extends React.Component {
                             </div>
 
                     </div>
-
 
                     <div className='container'>
                         <input className="btn btn-outline-secondary w-25" type="submit" value="Отправить" />

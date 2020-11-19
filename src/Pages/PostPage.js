@@ -5,6 +5,7 @@ import Loader from './Elements/Loader'
 import Posts from '../Pages/Lists/PostsList'
 import AlertError from './Elements/ErrorAlert'
 import Cookies from 'universal-cookie';
+import Dropzone from './Elements/DropZone'
 
 function Post() {
 
@@ -43,7 +44,15 @@ function Post() {
     return (
         <div>
              <AlertError textError={textError}/>
-            { posts.length ? <Posts posts={posts} /> : <Loader />}
+            { posts.length 
+            ?  <div> <div className='container'> 
+                    <Posts posts={posts} /> 
+                </div>
+                <div className='container'> 
+                    <Dropzone postid={posts[0].id}/>
+                </div>
+                </div>
+            : <Loader />}
         </div>
     )
 
