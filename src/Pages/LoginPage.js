@@ -27,7 +27,7 @@ function Login() {
 
   function SendLogin() {
 
-    console.log(login)
+    alert(login)
 
     const base64 = require('base-64');
 
@@ -50,22 +50,24 @@ function Login() {
         console.log(user)
         saveUser(user.accessToken, user.refreshToken, user.username)
         setRedirect(true)
+        alert ('yes, redirect')
 
       })
       .catch(e => {
         console.log(e.message)
-        
+
       })
 
   }
 
   function Logoff() {
-    
+    alert('logoff')
+
     cookie.remove('accessToken')
     cookie.remove('refreshToken')
     cookie.remove('username')
 
-    saveUser('','', '')
+    saveUser('', '', '')
     setRedirect(true)
   }
 
@@ -80,7 +82,7 @@ function Login() {
           ?
           <UnauthorizedUser onChangeLogin={onChangeLogin} onChangePassword={onChangePassword} SendLogin={SendLogin} />
           :
-          <AuthorizedUser Logoff={Logoff} cookie={cookie}/>
+          <AuthorizedUser Logoff={Logoff} cookie={cookie} />
       }
     </div>
   )
@@ -94,42 +96,41 @@ function UnauthorizedUser(props) {
 
   return (
 
-    <div className="row justify-content-center">
+    <form onSubmit={props.SendLogin} >
+      <div className="row justify-content-center">
 
-      <div className="col-md-6">
+        <div className="col-md-6">
 
-        <div className="card">
-          <div className="card-body">
-            <h3 className="panel-title"> Login </h3>
+          <div className="card">
+            <div className="card-body">
+              <h3 className="panel-title"> Login </h3>
 
-            <div className="form-group">
-              <span > Username or email </span>
-              <input type="username" className="form-control" onChange={props.onChangeLogin} required />
-            </div>
+              <div className="form-group">
+                <span > Username or email </span>
+                <input type="username" className="form-control" onChange={props.onChangeLogin} required />
+              </div>
 
-            <div className="form-group">
-              <span > Password </span>
-              <input type="password" name="password" className="form-control" onChange={props.onChangePassword} required />
-            </div>
+              <div className="form-group">
+                <span > Password </span>
+                <input type="password" name="password" className="form-control" onChange={props.onChangePassword} required />
+              </div>
 
-            <div className="form-group">
-              <button 
-                className="btn btn-block btn-success pointer" 
-                value="login" 
-                onClick={props.SendLogin} 
-                onPointerUp={props.SendLogin}
-                onpointerdown={props.SendLogin}
+              <div className="form-group">
+                <button
+                  className="btn btn-block btn-success pointer"
+                  value="login"
                 >LOGIN</button>
-            </div>
+              </div>
 
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 
-function AuthorizedUser( props ) {
+function AuthorizedUser(props) {
 
   const username = props.cookie.get('username')
 
