@@ -1,7 +1,9 @@
 import React from 'react'
+import DeviceDetect from '../../utils/detectDevice'
 
-export const ADDRESS = "http://localhost:8000" 
+export const ADDRESS = "http://10.0.0.102:8000" 
 export const TIMEOUT = 1000
+export const isMobile = DeviceDetect()
 
 
 export const MENUS = [

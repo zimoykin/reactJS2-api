@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import * as K from '../Models/Constants'
 import Cookies from 'universal-cookie';
-import { head } from 'underscore';
-import axios from 'axios';  
+import axios from 'axios';
 
 export default function Dropzone(props) {
 
@@ -14,7 +13,7 @@ export default function Dropzone(props) {
     textAlign: 'center',
     backgroundColor: 'lightgray',
     minHeight: '100px',
-    minWidth: '450px'
+    minWidth: '75%'
     //backgroundImage: 'url(' + imgUrl + ')',
   };
 
@@ -34,13 +33,20 @@ export default function Dropzone(props) {
       data.append('file', file)
 
       axios.post(`${K.ADDRESS}/api/posts/uploads/${props.postid}`, data, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          })
-        .then ( 
-          
-         )
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            alert(response.statusText)
+          }
+        })
+        .then(post => {
+          props.post(post)
+        })
         .catch(e => {
           alert(e.message)
         })

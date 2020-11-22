@@ -7,27 +7,53 @@ import { Redirect } from "react-router-dom";
 import App from '../App'
 import { Prev } from 'react-bootstrap/esm/PageItem'
 import Cookies from 'universal-cookie';
+import Axios from 'axios'
+import jwt from 'jsonwebtoken'
 
 
-function HomePage() {
+function HomePage( props ) {
 
   const [posts, setPosts] = React.useState([]);
   const [errorText, setErrorText] = React.useState('');
-  const [callEffect, setCallEffect] = React.useState (0)
+  const [callEffect, setCallEffect] = React.useState(1)
 
   const cookies = new Cookies();
 
-  useEffect( () => {
+  useEffect(() => {
+
+    if ( callEffect === 0 ) { return }
 
     var headers = new Headers();
-    const token = cookies.get ('accessToken')
+    headers.append("Authorization", "Bearer " + token);
+
+    const token = cookies.get('accessToken')
     if (token === null) {
       return
     }
-    headers.append("Authorization", "Bearer " + token);
+
+    const decodedToken = jwt.decode(token)
+    if (decodedToken === null) {
+      getNewAccessToken(cookies)
+      return
+    }
+
+    if (decodedToken.exp > (new Date().getTime() + 1) / 1000) {
+      console.log(true, 'token is not expired')
+    } else { 
+      getNewAccessToken(cookies)
+      return
+    }
+
 
     fetch(K.ADDRESS + '/api/posts', { headers: headers })
-      .then(response => response.json())
+      .then (response => { 
+        if(response.ok) { 
+          return response.json() 
+        } else  {
+          alert (response.statusText)
+        }
+      })
+      //.then (response => response.json())
       .then(posts => {
         setTimeout(() => {
           setPosts(posts)
@@ -38,11 +64,39 @@ function HomePage() {
         console.log(e)
         setErrorText(e.message)
         setTimeout(() => {
-              console.log (`call: ${callEffect}`)
-              setCallEffect (callEffect + 1)
+          console.log(`call: ${callEffect}`)
+          setCallEffect(callEffect + 1)
         }, K.TIMEOUT * 3)
       })
-  }, [callEffect])
+   }, [callEffect])
+
+
+  function getNewAccessToken (cookies) {
+
+    console.log ("getNewAccessToken")
+
+    const refreshToken = cookies.get ('refreshToken')
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        refreshToken: refreshToken
+      })
+    };
+   
+    fetch(`${K.ADDRESS}/api/users/refresh`, requestOptions)
+    .then(response => response.json())
+    .then(user => {
+      props.saveUser(user.accessToken, user.refreshToken, user.username)
+      setCallEffect(callEffect+1)
+    })
+    .catch(e => {
+      console.log(e.message)
+      props.saveUser('', '', '')
+    })
+  
+  }
 
 
   return (

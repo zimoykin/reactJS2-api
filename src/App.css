@@ -1,18 +1,11 @@
 
 .App {
   text-align: center;
-  margin: 5rem;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
 }
 
 .App-header {
@@ -41,11 +34,6 @@
 
 
 /* Dz */
-.container {
-  justify-content: center;
-  padding-top: 0.5rem;
-  display: flex;
-}
 .postDescription {
   width: 850px;
   word-wrap: break-word;
@@ -59,16 +47,8 @@
   text-align: justify;
 }
 
-.navibar {
-  transition: 0.5s;
-}
 
-
-
-
-/* loader
- */
-
+/*  loader  */
  .lds-ellipsis {
   display: inline-block;
   position: relative;
@@ -81,7 +61,7 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: #dfc;
+  background: #5bc0de;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 .lds-ellipsis div:nth-child(1) {

@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import * as K from './Models/Constants'
 import AuthContext from './Models/AuthContext'
 import { Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-
 
 function Login() {
 
@@ -27,14 +26,13 @@ function Login() {
 
   function SendLogin() {
 
-    alert(login)
-
     const base64 = require('base-64');
 
     var headers = new Headers();
     headers.append("Authorization", "Basic " + base64.encode(login + ":" + password));
     headers.append('Content-Type', 'application/json')
 
+    alert ('here1')
     const requestOptions = {
       method: 'POST',
       headers: headers,
@@ -43,21 +41,18 @@ function Login() {
         password: password
       })
     };
-
+   
     fetch(`${K.ADDRESS}/api/users/login`, requestOptions)
-      .then(response => response.json())
-      .then(user => {
-        console.log(user)
-        saveUser(user.accessToken, user.refreshToken, user.username)
-        setRedirect(true)
-        alert ('yes, redirect')
+    .then(response => response.json())
+    .then(user => {
+      alert ('here2')
+      saveUser(user.accessToken, user.refreshToken, user.username)
+      setRedirect(true)
+    })
+    .catch(e => {
+      console.log(e.message)
 
-      })
-      .catch(e => {
-        console.log(e.message)
-
-      })
-
+    })
   }
 
   function Logoff() {
@@ -96,7 +91,6 @@ function UnauthorizedUser(props) {
 
   return (
 
-    <form onSubmit={props.SendLogin} >
       <div className="row justify-content-center">
 
         <div className="col-md-6">
@@ -117,8 +111,10 @@ function UnauthorizedUser(props) {
 
               <div className="form-group">
                 <button
+                  type='submit'
                   className="btn btn-block btn-success pointer"
                   value="login"
+                  onClick={props.SendLogin}
                 >LOGIN</button>
               </div>
 
@@ -126,7 +122,7 @@ function UnauthorizedUser(props) {
           </div>
         </div>
       </div>
-    </form>
+
   )
 }
 

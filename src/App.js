@@ -13,8 +13,10 @@ import Login from './Pages/LoginPage'
 import Post from './Pages/PostPage'
 import Country from './Pages/CountryPage'
 import Search from './Pages/SearchPage'
+import MenuPage from './Pages/MenuPage'
 
 import AuthContext from './Pages/Models/AuthContext'
+import * as K from  './Pages/Models/Constants'
 
 import {
   BrowserRouter as Router,
@@ -39,8 +41,18 @@ const cookies = new Cookies();
       cookies.set('refreshToken', refreshToken, { path: '/' });
       cookies.set('username', username, { path: '/' });
 
+      localStorage.setItem( 'refreshToken', refreshToken )
+
       setIsLogged(cookies.get('accessToken') !== null)
-   } 
+   } else { 
+     cookies.remove('accessToken')
+     cookies.remove('refreshToken')
+     cookies.remove('username')
+
+     localStorage.removeItem ( 'refreshToken' )
+
+     setIsLogged(cookies.get('accessToken') !== null)
+   }
 
 }
  const [isLogged, setIsLogged] = React.useState ( 
@@ -60,6 +72,9 @@ const cookies = new Cookies();
           <Route path="/login">
             <Login />
           </Route>
+          <Route path="/menu">
+            <MenuPage />
+          </Route>
           <Route path="/country">
             <Country />
           </Route>
@@ -70,10 +85,10 @@ const cookies = new Cookies();
             <Contacts />
           </Route>
           <Route path="/posts/:id">
-            <Post />
+            <Post saveUser={saveUser}/>
           </Route>
           <Route path="/">
-            <HomePage />
+            <HomePage saveUser={saveUser}/>
           </Route>
         </Switch>
       </div>
