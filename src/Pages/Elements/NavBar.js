@@ -16,15 +16,10 @@ function NavBar(props) {
         K.isMobile
             ?
             
-            <div className="">
-                    <MenuPage pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
+            <div>
+                <MenuPage pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
                 <div className="App" id="outer-container">
-                    <div style={{ height: '36px' }} className=" w-100 bg-dark d-flex justify-content-end pr-3">
-                        <a href="/login" className="text-info text-uppercase">
-                            {cookies.get('username') === null
-                                ? 'LOGIN'
-                                : cookies.get('username')}
-                        </a>
+                    <div style={{ height: '3rem' }} className="w-100 bg-dark">
                     </div>
                 </div>
             </div>

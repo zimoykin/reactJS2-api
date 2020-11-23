@@ -31,7 +31,7 @@ function App() {
 
 const cookies = new Cookies();
 
- const saveUser = (acceessToken, refreshToken, username) => {
+ const saveUser = (acceessToken, refreshToken, username, image) => {
 
   setIsLogged(cookies.get('accessToken') !== null)
 
@@ -40,6 +40,7 @@ const cookies = new Cookies();
       cookies.set('accessToken', acceessToken, { path: '/' });
       cookies.set('refreshToken', refreshToken, { path: '/' });
       cookies.set('username', username, { path: '/' });
+      cookies.set('image', image, { path: '/' })
 
       localStorage.setItem( 'refreshToken', refreshToken )
 
@@ -48,6 +49,7 @@ const cookies = new Cookies();
      cookies.remove('accessToken')
      cookies.remove('refreshToken')
      cookies.remove('username')
+     cookies.remove('image')
 
      localStorage.removeItem ( 'refreshToken' )
 
@@ -55,6 +57,7 @@ const cookies = new Cookies();
    }
 
 }
+
  const [isLogged, setIsLogged] = React.useState ( 
    cookies.get('accessToken') !== null
   )

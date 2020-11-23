@@ -32,7 +32,7 @@ function Login() {
     headers.append("Authorization", "Basic " + base64.encode(login + ":" + password));
     headers.append('Content-Type', 'application/json')
 
-    alert ('here1')
+    //alert ('here1')
     const requestOptions = {
       method: 'POST',
       headers: headers,
@@ -45,13 +45,12 @@ function Login() {
     fetch(`${K.ADDRESS}/api/users/login`, requestOptions)
     .then(response => response.json())
     .then(user => {
-      alert ('here2')
-      saveUser(user.accessToken, user.refreshToken, user.username)
+      //alert ('here2')
+      saveUser(user.accessToken, user.refreshToken, user.username, user.image)
       setRedirect(true)
     })
     .catch(e => {
       console.log(e.message)
-
     })
   }
 
@@ -62,7 +61,7 @@ function Login() {
     cookie.remove('refreshToken')
     cookie.remove('username')
 
-    saveUser('', '', '')
+    saveUser('', '', '', '')
     setRedirect(true)
   }
 

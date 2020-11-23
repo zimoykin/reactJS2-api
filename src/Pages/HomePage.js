@@ -23,13 +23,13 @@ function HomePage( props ) {
 
     if ( callEffect === 0 ) { return }
 
-    var headers = new Headers();
-    headers.append("Authorization", "Bearer " + token);
-
     const token = cookies.get('accessToken')
     if (token === null) {
       return
     }
+
+    var headers = new Headers();
+    headers.append("Authorization", "Bearer " + token);
 
     const decodedToken = jwt.decode(token)
     if (decodedToken === null) {
