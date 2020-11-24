@@ -4,6 +4,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Cookies from 'universal-cookie';
+import axios from 'axios'
 
 //PAGES
 import HomePage from './Pages/HomePage'
@@ -26,10 +27,13 @@ import {
 } from "react-router-dom";
 
 
-
 function App() {
 
 const cookies = new Cookies();
+
+axios.defaults.headers.common = {
+  'Authorization': 'Bearer ' + cookies.get('accessToken')
+};
 
  const saveUser = (acceessToken, refreshToken, username, image) => {
 

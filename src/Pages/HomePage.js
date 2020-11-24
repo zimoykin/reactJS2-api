@@ -88,7 +88,7 @@ function HomePage( props ) {
     fetch(`${K.ADDRESS}/api/users/refresh`, requestOptions)
     .then(response => response.json())
     .then(user => {
-      props.saveUser(user.accessToken, user.refreshToken, user.username)
+      props.saveUser(user.accessToken, user.refreshToken, user.username, user.image)
       setCallEffect(callEffect+1)
     })
     .catch(e => {

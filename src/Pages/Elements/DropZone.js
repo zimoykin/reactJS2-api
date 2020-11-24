@@ -22,12 +22,13 @@ export default function Dropzone(props) {
 
     const token = cookies.get('accessToken')
 
-    alert(acceptedFiles)
+    //alert(acceptedFiles)
 
     acceptedFiles.forEach((file) => {
-      const reader = new FileReader()
+      // const reader = new FileReader()
 
-      reader.readAsArrayBuffer(file)
+      // reader.readAsArrayBuffer(file)
+      alert (file)
 
       const data = new FormData()
       data.append('file', file)

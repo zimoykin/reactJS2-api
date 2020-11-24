@@ -41,17 +41,17 @@ function Login() {
         password: password
       })
     };
-   
+
     fetch(`${K.ADDRESS}/api/users/login`, requestOptions)
-    .then(response => response.json())
-    .then(user => {
-      //alert ('here2')
-      saveUser(user.accessToken, user.refreshToken, user.username, user.image)
-      setRedirect(true)
-    })
-    .catch(e => {
-      console.log(e.message)
-    })
+      .then(response => response.json())
+      .then(user => {
+        //alert ('here2')
+        saveUser(user.accessToken, user.refreshToken, user.username, user.image)
+        setRedirect(true)
+      })
+      .catch(e => {
+        console.log(e.message)
+      })
   }
 
   function Logoff() {
@@ -90,37 +90,37 @@ function UnauthorizedUser(props) {
 
   return (
 
-      <div className="row justify-content-center">
+    <div className="row justify-content-center">
 
-        <div className="col-md-6">
+      <div className="col-md-6">
 
-          <div className="card">
-            <div className="card-body">
-              <h3 className="panel-title"> Login </h3>
+        <div className="card">
+          <div className="card-body">
+            <h3 className="panel-title"> Login </h3>
 
-              <div className="form-group">
-                <span > Username or email </span>
-                <input type="username" className="form-control" onChange={props.onChangeLogin} required />
-              </div>
-
-              <div className="form-group">
-                <span > Password </span>
-                <input type="password" name="password" className="form-control" onChange={props.onChangePassword} required />
-              </div>
-
-              <div className="form-group">
-                <button
-                  type='submit'
-                  className="btn btn-block btn-success pointer"
-                  value="login"
-                  onClick={props.SendLogin}
-                >LOGIN</button>
-              </div>
-
+            <div className="form-group">
+              <span > Username or email </span>
+              <input type="username" className="form-control" onChange={props.onChangeLogin} required />
             </div>
+
+            <div className="form-group">
+              <span > Password </span>
+              <input type="password" name="password" className="form-control" onChange={props.onChangePassword} required />
+            </div>
+
+            <div className="form-group">
+              <button
+                type='submit'
+                className="btn btn-block btn-success pointer"
+                value="login"
+                onClick={props.SendLogin}
+              >LOGIN</button>
+            </div>
+
           </div>
         </div>
       </div>
+    </div>
 
   )
 }
@@ -128,21 +128,48 @@ function UnauthorizedUser(props) {
 function AuthorizedUser(props) {
 
   const username = props.cookie.get('username')
+  const image = props.cookie.get('image')
+  //alert (image)
 
   if (username === null) {
     return (null)
   }
 
   return (
-    <div>
-      <div className='container'>
-        <span>  {`HI ${username}`} </span>
+
+    K.isMobile
+      ?
+      <div>
+        <div className='container'>
+          <img className='mt-0 pt-1 d-block w-100 rounded-circle' src={`${image}`} />
+          <span>  {`HI ${username}`} </span>
+        </div>
+        <div className='container'>
+          <div className="form-group">
+            <input className="btn btn-block btn-danger" value="logoff" onClick={props.Logoff} />
+          </div>
+        </div>
+
       </div>
+
+      :
       <div className='container'>
-        <div className="form-group">
-          <input className="btn btn-block btn-danger" value="logoff" onClick={props.Logoff} />
+        <div class="row">
+          <div class="col-6 col-md-4"></div>
+          <div class="col-6 col-md-4">
+          <img className='mt-0 pt-1 w-100 rounded-circle' src={`${image}`} />
+          </div>
+          <div class="col-6 col-md-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-6 col-md-4"></div>
+          <div class="col-6 col-md-4">
+          <h1 className='text-uppercase'>  {`✌ Hi ${username}`} 
+            <hr />
+            <a style={{ color: 'red', backgroundColor: "lightgray"}} onClick={props.Logoff}> click here to logoff</a> </h1>
+          </div>
+          <div class="col-6 col-md-4"></div>
         </div>
       </div>
-    </div>
   )
 }

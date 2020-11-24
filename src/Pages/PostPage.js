@@ -89,7 +89,7 @@ function Post ( props ) {
     fetch(`${K.ADDRESS}/api/users/refresh`, requestOptions)
     .then(response => response.json())
     .then(user => {
-      props.saveUser(user.accessToken, user.refreshToken, user.username, user.image)
+      props.saveUser(user.accessToken, user.refreshToken, user.username, user.image, user.image)
       setCallEffect(callEffect+1)
     })
     .catch(e => {
@@ -107,7 +107,13 @@ function Post ( props ) {
       :
       <div>
         {posts.length ? <PostsList posts={posts} /> : <Loader />}
-
+        {posts.length 
+        ?
+        <div className='container-sm'> 
+           <Dropzone postid={posts[0].id}/>
+        </div>
+        :
+        null }
         <AlertError textError={errorText} />
       </div>
 
