@@ -42,10 +42,10 @@ class NewPost extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            description: '',
-            placeid: '',
-            tags: ''
+            title: props.title,
+            description: props.description,
+            placeid: props.placeid,
+            tags: props.tags
         };
 
         this.handleChangeTitle = this.handleChangeTitle.bind(this);

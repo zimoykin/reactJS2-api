@@ -106,7 +106,7 @@ function Post ( props ) {
       <Redirect to="/login" />
       :
       <div>
-        {posts.length ? <PostsList posts={posts} /> : <Loader />}
+        {posts.length ? <PostsList posts={posts} full={true}/> : <Loader />}
         {posts.length 
         ?
         <div className='container-sm'> 
